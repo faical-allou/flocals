@@ -14,6 +14,8 @@ app = Flask(__name__)
 def render_home():
     return 'Hello, Flocals!'
 
+
+
 @app.route('/<path:filename>', methods=['GET'])
 def display_static():
     return send_from_directory(app.static_folder, filename)
