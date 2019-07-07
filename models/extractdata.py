@@ -1,10 +1,7 @@
 import os
 import psycopg2
-import simplejson
 import collections
 import datetime
-import numpy as np
-import math
 from itertools import groupby
 from operator import itemgetter
 from configdatabase import connectionStringDatabase
