@@ -1,5 +1,9 @@
 import os
+
 import psycopg2
+from psycopg2.extras import RealDictCursor
+
+import json
 import collections
 import datetime
 from itertools import groupby
@@ -29,25 +33,15 @@ class extractdata:
     def getaccounts(self ):
 
         connection = self.getconnection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = "SELECT * fROM account"
         cursor.execute(query)
 
-        rows = [('a','b','c', 1)]
-        rowarray_list = []
-
-        while len(rows) > 0:
-
-            rows = cursor.fetchmany(500)
-            # Convert query to row arrays
-            for row in rows:
-                rows_to_convert = (row[0], row[1], row[2], row[3])
-                t = list(rows_to_convert)
-                rowarray_list.append(t)
+        result = json.dumps(cursor.fetchall(), indent=2)
 
         connection.close()
 
-        return rowarray_list
+        return result
 
  
 def __init__(self):
