@@ -8,11 +8,22 @@ import sys
 import math
 import gc
 
+from models.extractdata import *
+
 app = Flask(__name__)
+
+extractdata = extractdata()
+
 
 @app.route('/')
 def render_home():
     return 'Hello, Flocals!'
+
+@app.route('/testDB')
+def testDB():
+    accounts = extractdata.getaccounts()
+    resp = jsonify(data=accounts)
+    return resp
 
 
 

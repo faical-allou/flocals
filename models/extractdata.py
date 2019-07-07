@@ -29,20 +29,12 @@ class extractdata:
 
         return conn
 
-    def getpopularitytableredirects(self, filtertype, city ):
+    def getaccounts(self ):
 
         connection = self.getconnection()
         cursor = connection.cursor()
-        if filtertype == 'o':
-            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
-            WHERE origincitycode = '"+city+"' and destinationcitycode > 'AAA' \
-            ORDER BY seats DESC LIMIT 10"
-            cursor.execute(query)
-        else:
-            query = "SELECT origincitycode, destinationcitycode, concat(origincitycode, '-',destinationcitycode), seats FROM ptbexits_popular \
-            WHERE origincitycode > 'AAA' and destinationcitycode = '"+city+"' \
-            ORDER BY seats DESC LIMIT 10"
-            cursor.execute(query)
+        query = "SELECT * fROM account"
+        cursor.execute(query)
 
         rows = [('a','b','c', 1)]
         rowarray_list = []
@@ -57,14 +49,6 @@ class extractdata:
                 rowarray_list.append(t)
 
         connection.close()
-        #normalize the table (adding 1 to the sum to return 0 when empty)
-        if len(rowarray_list) == 10:
-            max_popular = max(max(row[3] for row in rowarray_list),1)
-        else :
-            max_popular = 99999
-
-        for k in range(0,len(rowarray_list)):
-            rowarray_list[k][3] = round(rowarray_list[k][3]*100/max_popular)
 
         return rowarray_list
 
