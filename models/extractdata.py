@@ -8,7 +8,7 @@ import collections
 import datetime
 from itertools import groupby
 from operator import itemgetter
-from configdatabase import connectionStringDatabase
+from configdatabase import *
 
 class extractdata:
     def getconnection(self):

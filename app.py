@@ -8,9 +8,23 @@ import sys
 import math
 import gc
 
+from authlib.client import OAuth2Session
+import google.oauth2.credentials
+import googleapiclient.discovery
+
+import google_auth
+
 from models.extractdata import *
 
 app = Flask(__name__)
+
+if os.environ.get('ON_HEROKU'):
+        app.secret_key = os.environ.get("HERO_FLASK_SECRET_KEY", default=False)
+else :
+    app.secret_key = FLASK_SECRET_KEY
+
+
+app.register_blueprint(google_auth.app)
 
 extractdata = extractdata()
 
@@ -25,6 +39,13 @@ def testDB():
     resp = jsonify(data=accounts)
     return resp
 
+@app.route('/login')
+def index():
+    if google_auth.is_logged_in():
+        user_info = google_auth.get_user_info()
+        return '<div>You are currently logged in as ' + user_info['given_name'] + '<div><pre>' + json.dumps(user_info, indent=4) + "</pre>"
+
+    return 'You are not currently logged in.'
 
 
 @app.route('/<path:filename>', methods=['GET'])
