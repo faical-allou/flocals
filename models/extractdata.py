@@ -43,6 +43,31 @@ class extractdata:
 
         return result
 
- 
+    def getacttypes(self ):
+
+        connection = self.getconnection()
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
+        query = "SELECT * fROM activity_types"
+        cursor.execute(query)
+
+        result = json.dumps(cursor.fetchall(), indent=2)
+
+        connection.close()
+
+        return result
+
+    def getactivities(self, type ):
+
+        connection = self.getconnection()
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
+        query = "SELECT * fROM activities where act_type = '"+type+"'"
+        cursor.execute(query)
+
+        result = json.dumps(cursor.fetchall(), indent=2)
+
+        connection.close()
+
+        return result
+
 def __init__(self):
         print ("in init")
