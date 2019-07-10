@@ -30,14 +30,24 @@ extractdata = extractdata()
 
 
 @app.route('/')
-def render_home():
+def render_hello():
     return 'Hello, Flocals!'
+
+@app.route('/home')
+def render_home():
+    activity_types = extractdata.getacttypes()
+    return activity_types
+
+@app.route('/home/<type>')
+def render_activities(type):
+    activities = extractdata.getactivities(type)
+    return activities
+
 
 @app.route('/testDB')
 def testDB():
     accounts = extractdata.getaccounts()
-    resp = jsonify(data=accounts)
-    return resp
+    return accounts
 
 @app.route('/login')
 def index():
