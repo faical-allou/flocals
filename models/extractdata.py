@@ -60,8 +60,8 @@ class extractdata:
 
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT * fROM activities where act_type = '"+type+"'"
-        cursor.execute(query)
+        query = "SELECT * fROM activities where act_type = %s"
+        cursor.execute(query,type)
 
         result = json.dumps(cursor.fetchall(), indent=2)
 
