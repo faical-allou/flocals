@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, render_template, request, send_from_directory
 import psycopg2
 import os
-import json
 import collections
 import datetime
 import sys

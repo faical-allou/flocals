@@ -3,7 +3,7 @@ import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-import json
+import simplejson as json
 import collections
 import datetime
 from itertools import groupby
@@ -60,8 +60,8 @@ class extractdata:
 
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT * fROM activities where act_type = %s"
-        cursor.execute(query,type)
+        query = "SELECT * fROM activities join locations on activities.loc_short = locations.shortname  where act_type = %s"
+        cursor.execute(query,(type,))
 
         result = json.dumps(cursor.fetchall(), indent=2)
 
