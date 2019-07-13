@@ -60,7 +60,7 @@ class extractdata:
 
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT * fROM activities join locations on activities.loc_short = locations.shortname  where act_type = %s"
+        query = "SELECT a.id, a.name, a.act_type, l.name,l.city  fROM activities a join locations l on activities.loc_short = locations.shortname  where act_type = %s"
         cursor.execute(query,(type,))
 
         result = json.dumps(cursor.fetchall(), indent=2)
