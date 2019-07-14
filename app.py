@@ -1,4 +1,7 @@
 from flask import Flask, jsonify, render_template, request, send_from_directory
+from flask_cors import CORS
+
+
 import psycopg2
 import os
 import collections
@@ -16,6 +19,7 @@ import google_auth
 from models.extractdata import *
 
 app = Flask(__name__)
+CORS(app)
 
 if os.environ.get('ON_HEROKU'):
         app.secret_key = os.environ.get("HERO_FLASK_SECRET_KEY", default=False)

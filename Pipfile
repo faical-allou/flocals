@@ -12,6 +12,7 @@ authlib = "==0.11"
 google-api-python-client = "*"
 google-auth = "*"
 simplejson = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.5"
