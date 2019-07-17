@@ -36,22 +36,24 @@ extractdata = extractdata()
 def render_hello():
     return 'Hello, Flocals!'
 
-@app.route('/home')
+@app.route('api/v1/home')
 def render_home():
     activity_types = extractdata.getacttypes()
     return activity_types
 
-@app.route('/home/<type>')
+@app.route('api/v1/home/<type>')
 def render_activities(type):
     activities = extractdata.getactivities(type)
     return activities
 
-@app.route('/home/newactivity',methods=['GET', 'POST'])
+@app.route('api/v1/home/newactivity',methods=['GET', 'POST'])
 def add_activities():
     json_request = request.get_json(force=True, silent=False, cache=True)
     newStuff = json_request['name']
-    print(newStuff)
-    print(json_request)
+    if google_auth.is_logged_in():
+        print(json_request)
+    else:
+        print('Not logged in')
     return json_request
 
 
@@ -97,4 +99,4 @@ if __name__ == '__main__':
     if os.environ.get('ON_HEROKU'):
         app.run(host='0.0.0.0', port=port)
     else :
-        app.run(host='localhost', port=port)
+        app.run(host='0.0.0.0', port=port)
