@@ -46,6 +46,14 @@ def render_activities(type):
     activities = extractdata.getactivities(type)
     return activities
 
+@app.route('/home/newactivity',methods=['GET', 'POST'])
+def add_activities():
+    json_request = request.get_json(force=True, silent=False, cache=True)
+    newStuff = json_request['name']
+    print(newStuff)
+    print(json_request)
+    return activities
+
 
 @app.route('/testDB')
 def testDB():
