@@ -36,17 +36,17 @@ extractdata = extractdata()
 def render_hello():
     return 'Hello, Flocals!'
 
-@app.route('api/v1/home')
+@app.route('/api/v1/home')
 def render_home():
     activity_types = extractdata.getacttypes()
     return activity_types
 
-@app.route('api/v1/home/<type>')
+@app.route('/api/v1/home/<type>')
 def render_activities(type):
     activities = extractdata.getactivities(type)
     return activities
 
-@app.route('api/v1/home/newactivity',methods=['GET', 'POST'])
+@app.route('/api/v1/home/newactivity',methods=['GET', 'POST'])
 def add_activities():
     json_request = request.get_json(force=True, silent=False, cache=True)
     newStuff = json_request['name']
