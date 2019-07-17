@@ -52,7 +52,7 @@ def add_activities():
     newStuff = json_request['name']
     print(newStuff)
     print(json_request)
-    return activities
+    return json_request
 
 
 @app.route('/testDB')
