@@ -53,7 +53,7 @@ def add_activities():
     if google_auth.is_logged_in():
         print(json_request)
     else:
-        print('Not logged in')
+        print(json_request)
     return json_request
 
 
