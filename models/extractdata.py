@@ -71,7 +71,7 @@ class extractdata:
         cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = "SELECT name,city, latitude,longitude  fROM airports  where lower(iata) = lower(%s)"
         cursor.execute(query,(inputcode,))
-        result = json.dumps(cursor.fetchall(), indent=2)
+        result = json.dumps(cursor.fetchone(), indent=2)
         connection.close()
 
         return result
