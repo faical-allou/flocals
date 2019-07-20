@@ -36,33 +36,46 @@ extractdata = extractdata()
 def render_hello():
     return 'Hello, Flocals!'
 
-@app.route('/api/v1/home')
-def render_home():
+@app.route('/api/v1/home/')
+def return_alltypes():
     activity_types = extractdata.getacttypes()
     return activity_types
 
-@app.route('/api/v1/home/<type>')
-def render_activities(type):
+@app.route('/api/v1/home/<type>/')
+def return_activities(type):
     activities = extractdata.getactivities(type)
     return activities
 
-@app.route('/api/v1/home/newactivity',methods=['GET', 'POST'])
+@app.route('/api/v1/home/newactivity/',methods=['GET', 'POST'])
 def add_activities():
     json_request = request.get_json(force=True, silent=False, cache=True)
-    newStuff = json_request['name']
+    n = json_request['name']
+    p = json_request['place_id']
+    r = json_request['recommender']
+    a = json_request['details']['result']['formatted_address']
+    lt = json_request['details']['result']['geometry']['location']['lat']
+    lg = json_request['details']['result']['geometry']['location']['lng']  
+    t = json_request['act_type']
+    d = json_request['userDescription']
+    print(newStuffaddress)
+    
     if google_auth.is_logged_in():
         print(json_request)
     else:
         print(json_request)
     return json_request
 
+@app.route('/api/v1/airport/<inputcode>/')
+def return_airportcoord(inputcode):
+    airportdata = extractdata.getairportcoord(inputcode)
+    return airportdata
 
-@app.route('/testDB')
+@app.route('/testDB/')
 def testDB():
     accounts = extractdata.getaccounts()
     return accounts
 
-@app.route('/login')
+@app.route('/login/')
 def index():
     if google_auth.is_logged_in():
         user_info = google_auth.get_user_info()
@@ -71,11 +84,11 @@ def index():
     return 'You are not currently logged in.'
 
 
-@app.route('/<path:filename>', methods=['GET'])
+@app.route('/<path:filename>/', methods=['GET'])
 def display_static():
     return send_from_directory(app.static_folder, filename)
 
-@app.route('/js/<path:filename>', methods=['GET'])
+@app.route('/js/<path:filename>/', methods=['GET'])
 def load_js(filename):
     return send_from_directory('js', filename)
 

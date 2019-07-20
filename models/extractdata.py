@@ -49,9 +49,7 @@ class extractdata:
         cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = "SELECT * fROM activity_types"
         cursor.execute(query)
-
         result = json.dumps(cursor.fetchall(), indent=2)
-
         connection.close()
 
         return result
@@ -62,9 +60,18 @@ class extractdata:
         cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = "SELECT a.id as activity_id, a.name, a.act_type, l.name as loc_name ,l.city  fROM activities a join locations l on a.loc_short = l.shortname  where act_type = %s"
         cursor.execute(query,(type,))
-
         result = json.dumps(cursor.fetchall(), indent=2)
+        connection.close()
 
+        return result
+
+    def getairportcoord(self, inputcode ):
+
+        connection = self.getconnection()
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
+        query = "SELECT name,city, latitude,longitude  fROM airports  where lower(iata) = lower(%s)"
+        cursor.execute(query,(inputcode,))
+        result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
 
         return result
