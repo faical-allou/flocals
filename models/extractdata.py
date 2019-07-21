@@ -47,7 +47,7 @@ class extractdata:
 
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT * fROM activity_types"
+        query = "SELECT type_convert FROM recommendations GROUP BY type_convert"
         cursor.execute(query)
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
@@ -58,7 +58,7 @@ class extractdata:
 
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT a.id as activity_id, a.name, a.act_type, l.name as loc_name ,l.city  fROM activities a join locations l on a.loc_short = l.shortname  where act_type = %s"
+        query = "SELECT rec_name, count(1) as nb_rec fROM recommendations where type_convert = %s group by rec_name order by count(1) DESC"
         cursor.execute(query,(type,))
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()

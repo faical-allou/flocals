@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_cors import CORS
 
-
 import psycopg2
 import os
 import collections
 import datetime
+import time
 import sys
 import math
 import gc
@@ -17,6 +17,7 @@ import googleapiclient.discovery
 import google_auth
 
 from models.extractdata import *
+from models.insertdata import *
 
 app = Flask(__name__)
 CORS(app)
@@ -30,7 +31,7 @@ else :
 app.register_blueprint(google_auth.app)
 
 extractdata = extractdata()
-
+insertdata = insertdata()
 
 @app.route('/')
 def render_hello():
@@ -56,21 +57,19 @@ def add_activities():
     tg = json_request['googletype']
     tc = json_request['type_convert']
     ud = json_request['userDescription']
-
     p = json_request['place_id']
     r = json_request['recommender']
     a = json_request['address']
     lt = json_request['details']['result']['geometry']['location']['lat']
     lg = json_request['details']['result']['geometry']['location']['lng'] 
-    dt = json_request['details']
+    dt = json.dumps(json_request['details'])
+    tx = time.time()
+    now = datetime.datetime.now()
+    ymd = str(now.year)+str(format(now.month,'02'))+str(format(now.day,'02'))
+    
+    insertdata.insertrecommendation(s,ap,n,tu,tg,tc,ud,p,r,a,lt,lg,dt,tx,ymd)
 
-    print(newStuffaddress)
-
-    if google_auth.is_logged_in():
-        print(json_request)
-    else:
-        print(json_request)
-    return json_request
+    return 'done'
 
 @app.route('/api/v1/airport/<inputcode>/')
 def return_airportcoord(inputcode):
