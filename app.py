@@ -49,16 +49,23 @@ def return_activities(type):
 @app.route('/api/v1/home/newactivity/',methods=['GET', 'POST'])
 def add_activities():
     json_request = request.get_json(force=True, silent=False, cache=True)
+    s = json_request['sessionid']
+    ap = json_request['airport']
     n = json_request['name']
+    tu = json_request['type_user']
+    tg = json_request['googletype']
+    tc = json_request['type_convert']
+    ud = json_request['userDescription']
+
     p = json_request['place_id']
     r = json_request['recommender']
-    a = json_request['details']['result']['formatted_address']
+    a = json_request['address']
     lt = json_request['details']['result']['geometry']['location']['lat']
-    lg = json_request['details']['result']['geometry']['location']['lng']  
-    t = json_request['act_type']
-    d = json_request['userDescription']
+    lg = json_request['details']['result']['geometry']['location']['lng'] 
+    dt = json_request['details']
+
     print(newStuffaddress)
-    
+
     if google_auth.is_logged_in():
         print(json_request)
     else:
