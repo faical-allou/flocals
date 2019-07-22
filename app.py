@@ -42,10 +42,17 @@ def return_alltypes():
     activity_types = extractdata.getacttypes()
     return activity_types
 
-@app.route('/api/v1/home/<type>/')
-def return_activities(type):
-    activities = extractdata.getactivities(type)
+@app.route('/api/v1/home/<type_>/')
+def return_activities(type_):
+    print(type_)
+    activities = extractdata.getactivities(type_)
     return activities
+
+@app.route('/api/v1/home/recommendations/<id>')
+def return_recommendations(id):
+    activities = extractdata.getrecommendations(id)
+    return activities
+
 
 @app.route('/api/v1/home/newactivity/',methods=['GET', 'POST'])
 def add_activities():

@@ -54,12 +54,23 @@ class extractdata:
 
         return result
 
-    def getactivities(self, type ):
+    def getactivities(self, type_ ):
 
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT rec_name, count(1) as nb_rec fROM recommendations where type_convert = %s group by rec_name order by count(1) DESC"
-        cursor.execute(query,(type,))
+        query = "SELECT place_id, rec_name, count(1) as nb_rec fROM recommendations where lower(type_convert) = lower(%s) group by place_id,rec_name order by count(1) DESC"
+        print(query, type_)
+        cursor.execute(query,(type_,))
+        result = json.dumps(cursor.fetchall(), indent=2)
+        connection.close()
+
+        return result
+
+    def getrecommendations(self, id_ ):
+        connection = self.getconnection()
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
+        query = "SELECT place_id, rec_name, recommender, userDescription fROM recommendations where place_id = %s "
+        cursor.execute(query,(id_,))
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
 
