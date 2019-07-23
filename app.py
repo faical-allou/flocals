@@ -37,15 +37,15 @@ insertdata = insertdata()
 def render_hello():
     return 'Hello, Flocals!'
 
-@app.route('/api/v1/home/')
-def return_alltypes():
-    activity_types = extractdata.getacttypes()
+
+@app.route('/api/v1/home/<airport>/') 
+def return_alltypesbyairport(airport): 
+    activity_types = extractdata.getacttypes(airport) 
     return activity_types
 
-@app.route('/api/v1/home/<type_>/')
-def return_activities(type_):
-    print(type_)
-    activities = extractdata.getactivities(type_)
+@app.route('/api/v1/home/<airport>/<type>/')
+def return_activities(airport, type):
+    activities = extractdata.getactivities(airport, type)
     return activities
 
 @app.route('/api/v1/home/recommendations/<id>')

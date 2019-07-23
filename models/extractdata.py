@@ -43,24 +43,32 @@ class extractdata:
 
         return result
 
-    def getacttypes(self ):
-
+    def getacttypes(self, airport_ ):
+        
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT type_convert FROM recommendations GROUP BY type_convert"
-        cursor.execute(query)
+        query = \
+        "WITH cte_location as (SELECT latitude, longitude FROM airports where lower(iata) = lower(%s)) \
+        SELECT type_convert FROM recommendations as r CROSS JOIN cte_location as l \
+        WHERE gcd(r.lat, r.lng, l.latitude, l.longitude)<100 \
+        GROUP BY type_convert"
+        cursor.execute(query, (airport_,))
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
 
+
         return result
 
-    def getactivities(self, type_ ):
+    def getactivities(self, airport_, type_ ):
 
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT place_id, rec_name, count(1) as nb_rec fROM recommendations where lower(type_convert) = lower(%s) group by place_id,rec_name order by count(1) DESC"
-        print(query, type_)
-        cursor.execute(query,(type_,))
+        query = "WITH cte_location as (SELECT latitude, longitude FROM airports where lower(iata) = lower(%s))\
+                SELECT place_id, rec_name, count(1) as nb_rec \
+                FROM recommendations as r CROSS JOIN cte_location as l\
+                WHERE lower(r.type_convert) = lower(%s) AND gcd(r.lat, r.lng, l.latitude, l.longitude)<100 \
+                GROUP BY place_id,rec_name order by count(1) DESC"
+        cursor.execute(query,(airport_, type_,))
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
 
