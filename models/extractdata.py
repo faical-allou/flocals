@@ -43,6 +43,20 @@ class extractdata:
 
         return result
 
+    def getallacttypes(self ):
+        
+        connection = self.getconnection()
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
+        query = \
+        "SELECT type_convert FROM recommendations\
+        GROUP BY type_convert"
+        cursor.execute(query)
+        result = json.dumps(cursor.fetchall(), indent=2)
+        connection.close()
+
+
+        return result
+
     def getacttypes(self, airport_ ):
         
         connection = self.getconnection()
