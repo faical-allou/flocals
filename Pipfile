@@ -13,6 +13,7 @@ google-api-python-client = "*"
 google-auth = "*"
 simplejson = "*"
 flask-cors = "*"
+requests = "*"
 
 [requires]
 python_version = "3.5"

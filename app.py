@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_cors import CORS
 
+import requests
 import psycopg2
 import os
 import collections
@@ -52,10 +53,19 @@ def return_activities(airport, type):
     activities = extractdata.getactivities(airport, type)
     return activities
 
-@app.route('/api/v1/home/recommendations/<id>')
-def return_recommendations(id):
-    activities = extractdata.getrecommendations(id)
-    return activities
+@app.route('/api/v1/home/recommendations/<lang>/<id>/')
+def return_recommendations(lang, id):
+    recommendations = extractdata.getrecommendations(id)
+    url = 'https://translation.googleapis.com/language/translate/v2?key=' + G_API_KEY 
+    returnrec =[]
+    for rec in json.loads(recommendations):
+        format = {"key": G_API_KEY, "headers": {"Accept": 'application/json',"Content-Type": 'application/json',"charset":'utf-8'}}
+        body = { "q": [rec['userdescription']], "target": lang }       
+        r = requests.post(url, params=format, json=body)
+        rjson = r.json()
+        rec['userdescription_translated']= rjson['data']['translations'][0]['translatedText']
+        returnrec.append(rec)
+    return json.dumps(returnrec)
 
 
 @app.route('/api/v1/home/newactivity/',methods=['GET', 'POST'])
