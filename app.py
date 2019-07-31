@@ -25,8 +25,11 @@ CORS(app)
 
 if os.environ.get('ON_HEROKU'):
         app.secret_key = os.environ.get("HERO_FLASK_SECRET_KEY", default=False)
+        g_api_key = os.environ.get("HERO_G_API_KEY", default=False)
+        
 else :
     app.secret_key = FLASK_SECRET_KEY
+    g_api_key = G_API_KEY
 
 
 app.register_blueprint(google_auth.app)
@@ -56,7 +59,7 @@ def return_activities(airport, type):
 @app.route('/api/v1/home/recommendations/<lang>/<id>/')
 def return_recommendations(lang, id):
     recommendations = extractdata.getrecommendations(id)
-    url = 'https://translation.googleapis.com/language/translate/v2?key=' + G_API_KEY 
+    url = 'https://translation.googleapis.com/language/translate/v2?key=' + g_api_key 
     returnrec =[]
     for rec in json.loads(recommendations):
         format = {"key": G_API_KEY, "headers": {"Accept": 'application/json',"Content-Type": 'application/json',"charset":'utf-8'}}
