@@ -62,7 +62,7 @@ def return_recommendations(lang, id):
     url = 'https://translation.googleapis.com/language/translate/v2?key=' + g_api_key 
     returnrec =[]
     for rec in json.loads(recommendations):
-        format = {"key": G_API_KEY, "headers": {"Accept": 'application/json',"Content-Type": 'application/json',"charset":'utf-8'}}
+        format = {"key": g_api_key, "headers": {"Accept": 'application/json',"Content-Type": 'application/json',"charset":'utf-8'}}
         body = { "q": [rec['userdescription']], "target": lang }       
         r = requests.post(url, params=format, json=body)
         rjson = r.json()
