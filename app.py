@@ -63,7 +63,7 @@ def return_recommendations(lang, id):
     returnrec =[]
     for rec in json.loads(recommendations):
         format = {"key": g_api_key, "headers": {"Accept": 'application/json',"Content-Type": 'application/json',"charset":'utf-8'}}
-        body = { "q": [rec['userdescription']], "target": lang }       
+        body = { "q": [rec['userdescription']], "target": lang , "format": "text"}       
         r = requests.post(url, params=format, json=body)
         rjson = r.json()
         rec['userdescription_translated']= rjson['data']['translations'][0]['translatedText']
