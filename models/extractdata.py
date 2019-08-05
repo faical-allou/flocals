@@ -109,5 +109,17 @@ class extractdata:
 
         return result
 
+    def getplacename(self, id ):
+
+        connection = self.getconnection()
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
+        query = "SELECT rec_name fROM recommendations  where place_id = %s"
+        cursor.execute(query,(id,))
+        result = json.dumps(cursor.fetchone(), indent=2)
+        connection.close()
+
+        return result
+
+
 def __init__(self):
         print ("in init")
