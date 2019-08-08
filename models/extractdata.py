@@ -78,10 +78,10 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = "WITH cte_location as (SELECT latitude, longitude FROM airports where lower(iata) = lower(%s))\
-                SELECT place_id, rec_name,lang, lat, lng, count(1) as nb_rec \
+                SELECT place_id, rec_name, lat, lng, count(1) as nb_rec \
                 FROM recommendations as r CROSS JOIN cte_location as l\
                 WHERE lower(r.type_convert) = lower(%s) AND gcd(r.lat, r.lng, l.latitude, l.longitude)<100 \
-                GROUP BY place_id,rec_name, lang,lat, lng order by count(1) DESC"
+                GROUP BY place_id,rec_name, lat, lng order by count(1) DESC"
         cursor.execute(query,(airport_, type_,))
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
@@ -91,7 +91,7 @@ class extractdata:
     def getrecommendations(self, id_ ):
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT place_id, rec_name, recommender, userDescription fROM recommendations where place_id = %s "
+        query = "SELECT place_id, rec_name, recommender,lang, userDescription fROM recommendations where place_id = %s "
         cursor.execute(query,(id_,))
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
@@ -104,17 +104,6 @@ class extractdata:
         cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = "SELECT name,city, latitude,longitude  fROM airports  where lower(iata) = lower(%s)"
         cursor.execute(query,(inputcode,))
-        result = json.dumps(cursor.fetchone(), indent=2)
-        connection.close()
-
-        return result
-
-    def getplacename(self, id ):
-
-        connection = self.getconnection()
-        cursor = connection.cursor(cursor_factory=RealDictCursor)
-        query = "SELECT rec_name fROM recommendations  where place_id = %s limit 1"
-        cursor.execute(query,(id,))
         result = json.dumps(cursor.fetchone(), indent=2)
         connection.close()
 

@@ -56,11 +56,6 @@ def return_activities(airport, type):
     activities = extractdata.getactivities(airport, type)
     return activities
 
-@app.route('/api/v1/home/places/<id>/')
-def return_pacename(id):
-    placename = extractdata.getplacename(id)
-    return placename
-
 @app.route('/api/v1/home/recommendations/<lang>/<id>/')
 def return_recommendations(lang, id):
     recommendations = extractdata.getrecommendations(id)
@@ -86,7 +81,7 @@ def add_activities():
     tg = json_request['googletype']
     tc = json_request['type_convert']
     ud = json_request['userDescription']
-    ul = json_request['userlang']
+    ul = json_request['userlang'].strip()
     p = json_request['place_id']
     r = json_request['recommender']
     a = json_request['address']
