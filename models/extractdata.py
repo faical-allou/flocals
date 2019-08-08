@@ -78,7 +78,7 @@ class extractdata:
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = "WITH cte_location as (SELECT latitude, longitude FROM airports where lower(iata) = lower(%s))\
-                SELECT place_id, rec_name, lat, lng, count(1) as nb_rec \
+                SELECT place_id, rec_name,lang, lat, lng, count(1) as nb_rec \
                 FROM recommendations as r CROSS JOIN cte_location as l\
                 WHERE lower(r.type_convert) = lower(%s) AND gcd(r.lat, r.lng, l.latitude, l.longitude)<100 \
                 GROUP BY place_id,rec_name, lat, lng order by count(1) DESC"

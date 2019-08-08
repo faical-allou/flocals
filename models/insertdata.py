@@ -29,13 +29,13 @@ class insertdata:
 
         return conn
 
-    def insertrecommendation(self,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o ):
+    def insertrecommendation(self,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p ):
 
         connection = self.getinsertconnection()
         cursor = connection.cursor()
-        query = 'INSERT INTO recommendations  (sessionid, airport,rec_name,type_userinput,googletype,type_convert,userDescription,place_id,recommender,address,lat ,lng ,details,created_unix, ymd) VALUES (%s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s,%s, %s)'
+        query = 'INSERT INTO recommendations  (sessionid, airport,rec_name,type_userinput,googletype,type_convert,userDescription,lang,place_id,recommender,address,lat ,lng ,details,created_unix, ymd) VALUES (%s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s,%s,%s, %s)'
 
-        cursor.execute(query,(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o))
+        cursor.execute(query,(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p))
         connection.close()
         
         return

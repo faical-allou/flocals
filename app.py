@@ -86,6 +86,7 @@ def add_activities():
     tg = json_request['googletype']
     tc = json_request['type_convert']
     ud = json_request['userDescription']
+    ul = json_request['userlang']
     p = json_request['place_id']
     r = json_request['recommender']
     a = json_request['address']
@@ -96,7 +97,7 @@ def add_activities():
     now = datetime.datetime.now()
     ymd = str(now.year)+str(format(now.month,'02'))+str(format(now.day,'02'))
     
-    insertdata.insertrecommendation(s,ap,n,tu,tg,tc,ud,p,r,a,lt,lg,dt,tx,ymd)
+    insertdata.insertrecommendation(s,ap,n,tu,tg,tc,ud,ul,p,r,a,lt,lg,dt,tx,ymd)
 
     return 'done'
 
