@@ -81,7 +81,7 @@ class extractdata:
                 SELECT place_id, rec_name,lang, lat, lng, count(1) as nb_rec \
                 FROM recommendations as r CROSS JOIN cte_location as l\
                 WHERE lower(r.type_convert) = lower(%s) AND gcd(r.lat, r.lng, l.latitude, l.longitude)<100 \
-                GROUP BY place_id,rec_name, lat, lng order by count(1) DESC"
+                GROUP BY place_id,rec_name, lang,lat, lng order by count(1) DESC"
         cursor.execute(query,(airport_, type_,))
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
