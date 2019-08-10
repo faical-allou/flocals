@@ -57,7 +57,7 @@ def return_alltypesbyairport(lang, airport):
         returnrec.append(rec)
     return json.dumps(returnrec)
 
-@app.route('/api/v1/home/types/<airport>/<type>/')
+@app.route('/api/v1/home/details/<airport>/<type>/')
 def return_activities(airport, type):
     activities = extractdata.getactivities(airport, type)
 
