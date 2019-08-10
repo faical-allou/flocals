@@ -43,8 +43,7 @@ class extractdata:
 
         return result
 
-    def getallacttypes(self ):
-        
+    def getallacttypes(self ):        
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = \
@@ -53,12 +52,9 @@ class extractdata:
         cursor.execute(query)
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
-
-
         return result
 
-    def getacttypes(self, airport_ ):
-        
+    def getacttypes(self, airport_ ):       
         connection = self.getconnection()
         cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = \
@@ -69,8 +65,6 @@ class extractdata:
         cursor.execute(query, (airport_,))
         result = json.dumps(cursor.fetchall(), indent=2)
         connection.close()
-
-
         return result
 
     def getactivities(self, airport_, type_ ):

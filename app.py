@@ -19,6 +19,7 @@ import google_auth
 
 from models.extractdata import *
 from models.insertdata import *
+from dictref import *
 
 app = Flask(__name__)
 CORS(app)
@@ -41,19 +42,25 @@ insertdata = insertdata()
 def render_hello():
     return 'Hello, Flocals!'
 
-@app.route('/api/v1/home/') 
-def return_alltypes(): 
-    activity_types = extractdata.getallacttypes() 
-    return activity_types
-
-@app.route('/api/v1/home/<airport>/') 
-def return_alltypesbyairport(airport): 
+@app.route('/api/v1/home/alltypes/<lang>/<airport>/') 
+def return_alltypesbyairport(lang, airport): 
     activity_types = extractdata.getacttypes(airport) 
-    return activity_types
+    url = 'https://translation.googleapis.com/language/translate/v2?key=' + g_api_key 
+    returnrec =[]
+    for rec in json.loads(activity_types):
+        format = {"key": g_api_key, "headers": {"Accept": 'application/json',"Content-Type": 'application/json',"charset":'utf-8'}}
+        body = { "q": [dictio['int2ext'][rec['type_convert']]], "target": lang , "format": "text"}       
+        print(body)
+        r = requests.post(url, params=format, json=body)
+        rjson = r.json()
+        rec['type_translated']= rjson['data']['translations'][0]['translatedText']
+        returnrec.append(rec)
+    return json.dumps(returnrec)
 
-@app.route('/api/v1/home/<airport>/<type>/')
+@app.route('/api/v1/home/types/<airport>/<type>/')
 def return_activities(airport, type):
     activities = extractdata.getactivities(airport, type)
+
     return activities
 
 @app.route('/api/v1/home/recommendations/<lang>/<id>/')
